@@ -2,7 +2,7 @@
 #include<string.h>
 char (*stringsplitter(char *z))[100] // function which returns char(*)[100]
 {
-  int jm,j,mnm=0,i=0;
+  int jm,j,mnm=0,i=0,count =0 ;
   static char cf[100][100] = {0}; // declare a static 2D arr as it has to be returned back
   for (int i = 0; i < 100; i++)
 {
@@ -14,17 +14,24 @@ char (*stringsplitter(char *z))[100] // function which returns char(*)[100]
 }
   for(jm=0;mnm == 0;jm++) // jm helps to change us rows in 2D array
   {
-    for(j=0;;j++)// j helps in changing columns of 2D array
+    for(j=0;count == 0;j++)// j helps in changing columns of 2D array
     {
-      if (*z != '\0' )
+      if (*(z+i) != '\0' )
       {
         cf[jm][j] = *(z+i); // if there is a string  passed to function then
         //this if helps to use it
         i++;
-      }
-      else
-      scanf("%c",&cf[jm][j]); // takes input from stdin if empty array is passed and stores in 2D array
+        if(*(z+i) == '\0') //checks if string is finishes or not
+        {
+            mnm++; //break first for loop
+            count++;// break second loop
+        }
 
+      }
+    else
+      {
+      scanf("%c",&cf[jm][j]); // takes input from stdin if empty array is passed and stores in 2D array
+      }
       if (cf[jm][j] == ' ') // checks for spaces in input
       {
         cf[jm][j] = '\0'; // escape character at end of a word
