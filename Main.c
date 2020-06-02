@@ -8,10 +8,13 @@ int signUp()
   char id[10],pass[10];
   printf("Enter your name: \n");
   gets(name);
+  printf("%s",name);
   printf("Create a user id: \n");
   gets(id);
+  printf("%s",id);
   printf("Enter Password: \n");
   gets(pass);
+  printf("%s",pass);
   printf("Choose an option:\n1-Student\n2-Staff\n");
   scanf("%d",&w);
   switch(w)
@@ -41,5 +44,5 @@ int signUp()
 }
 int main()
 {
-  int a= signUp();
+  int a = signUp();
 }
