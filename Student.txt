@@ -1,6 +1,0 @@
-Name=Aditya Choraria
-UserId=Aditya828
-Password=asdfgh
-Name=Akshuti Tyagi
-UserId=Akshuti28
-Password=fghjkl
