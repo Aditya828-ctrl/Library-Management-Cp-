@@ -2,7 +2,7 @@
 #include<string.h>
 char (*stringsplitter(char *z))[100] // function which returns char(*)[100]
 {
-  int jm,j,mnm=0,i=0,count =0 ;
+  int jm,j,mnm=0,i=0,count =0;
   static char cf[100][100] = {0}; // declare a static 2D arr as it has to be returned back
   for (int i = 0; i < 100; i++)
 {
@@ -34,14 +34,24 @@ char (*stringsplitter(char *z))[100] // function which returns char(*)[100]
       }
       if (cf[jm][j] == ' ') // checks for spaces in input
       {
+        if(cf[jm][0]== ' ')
+        {
+          cf[jm][j] = '\0';
+          jm--;
+          break;
+        }
+        else
+        {
         cf[jm][j] = '\0'; // escape character at end of a word
         break;
+        }
       }
+
       if(cf[jm][j]=='\n') // terminates input
       {
         cf[jm][j] = '\0';// escape character to last array element before terminating
         mnm++; // helps in getting out from the first for loop
-        break; // well, we know it
+        break; // from second for loop
       }
 
     }
@@ -74,6 +84,6 @@ int main(void)
   h = stringsplitter(b);//when B  is initialised to 0  program uses stdin for input
   for(int i = 0;i<25;i++)
 {
-      printf("%s\t",*(h+i));
+      printf("%s",*(h+i));
 }
 }
