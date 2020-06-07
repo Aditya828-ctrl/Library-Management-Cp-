@@ -258,13 +258,14 @@ bklist *loaddatabase()// declaring  a function of type bklist which returns a po
 
 }
 
-bklist* editbook(bklist* z, int i)
+bklist *editbook(bklist* z, int i)
 {
 //so a is the header pointer passed from the loaddatabase function and z is the book info to be deleted or added in the database,
 // and i defines the operation you wanna perform with the book info you passed
 bklist *temp; int str1,str2,str3;
 bklist *prev;
 bklist *a;
+bklist *finedit;
 int cnt5=1,issre;
 a = loaddatabase();
 temp = a->next;
@@ -283,14 +284,16 @@ for(;;)
     { cnt5 = 0;
       temp->count++;
       printf("\n %d \n\n\n\n\n\n\n",temp->count);
+      finedit = temp;
       break;
     }
     else if(i == 2)
-    {
+    { cnt5 = 0;
       if(temp->count)
       {
       temp->count--;
       printf("\n %d \n\n\n\n\n\n\n",temp->count);
+      finedit = temp;
       }
       if(temp->count == 0)
       {
@@ -319,25 +322,27 @@ if (cnt5)
   z->issue = issre+1;
   z->count = 1;
   z->next = NULL;
+  finedit = z;
 }
 // printf("%s  %d %d",temp->next->auth,temp->next->count,temp->next->issue);
+return finedit;
 }
 
 int main(void)
 {
  int oper;
  char str[50];
- bklist a;
+ bklist a,*returnedbook;
  bklist *b;
  printf("search for book you want to delete - ");
  gets(str);
  a = booksearch(str);
  printf(" %s %s %s",a.auth,a.Title,a.Genre);
- scanf("%s %s %s",a.auth,a.Title,a.Genre);
+ // scanf("%s %s %s",a.auth,a.Title,a.Genre);
  b = &a;
  printf("operation you want to perform");//1 for adding a book 2 for deleting a book
  scanf("%d",&oper);
  printf(" %s %s %s",b->auth,b->Title,b->Genre);
-
-editbook(b,oper);
+ returnedbook = editbook(b,oper);
+ printf("\n %d  %d",returnedbook->issue,returnedbook->count);
 }
