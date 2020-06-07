@@ -9,7 +9,7 @@ void staffPage(char *c, int l);
 void addMember();
 void signIn();
 void deleteMember();
-int size(FILE *fp);
+void forgotPass(char[35],char[35],char[35]);
 
 void signUp()
 {
@@ -18,99 +18,138 @@ void signUp()
 }
 void addMember()
 {
-  FILE *fp;
+  FILE *fp1,*fp2,*fp3,*fp4;
   int w;
-  char name[25];
-  char id[25],pass[25];
+  char name[35];
+  char id[35],pass[35],dob[11];
   printf("What member account do you want to add?\nChoose an option:\n1-Student\n2-Staff\n3-Faculty\n4-Back to Main Menu\n");
   scanf("%d",&w);
   switch(w)
   {
-     case 1 : fp=fopen("Student.txt","a+");
+     case 1 : fp1=fopen("StudentName.txt","a+");
+              fp2=fopen("StudentId.txt","a+");
+              fp3=fopen("StudentPass.txt","a");
+              fp4=fopen("StudentDob.txt","a+");
               break;
-     case 2 : fp=fopen("Staff.txt","a+");
+     case 2 : fp1=fopen("StaffName.txt","a+");
+              fp2=fopen("StaffId.txt","a+");
+              fp3=fopen("StaffPass.txt","a+");
+              fp4=fopen("StaffDob.txt","a+");
               break;
-     case 3 : fp=fopen("Faculty.txt","a+");
+     case 3 : fp1=fopen("FacultyName.txt","a+");
+              fp1=fopen("FacultyId.txt","a+");
+              fp1=fopen("FacultyPass.txt","a+");
+              fp1=fopen("FacultyDob.txt","a+");
               break;
      case 4 : mainMenu();
               break;
      default : printf("Invalid Option\nChoose again\n");
-              signUp();
+              addMember();
   }
-  printf("\n");gets(id);
   printf("Enter member's name: \n");
+  gets(name);
   gets(name);
   printf("Create a user id for member: \n");
   gets(id);
   printf("Create password for member: \n");
-  gets(pass);
-  char s[30];
-  strcpy(s,"Name=");
-  strcat(s,name);
-  fputs(s,fp);
-  strcpy(s,"\nUserId=");
-  strcat(s,id);
-  fputs(s,fp);
-  strcpy(s,"\nPassword=");
-  strcat(s,pass);
-  strcat(s,"\n");
-  fputs(s,fp);
+  gets(pass);printf("pass%s\n",pass);
+  printf("Enter DateOfBirth of the member in the format DD-MM-YYYY\n");
+  gets(dob);
+  //A Check is needed to make sure dob is in format
+  strcat(name,"\n");
+  strcat(id,"\n");
+  strcat(pass,"\n");
+  strcat(dob,"\n");
+  fputs(name,fp1);
+  fputs(id,fp2);
+  fputs(pass,fp3);
+  fputs(dob,fp4);
   printf("The member has been added successfully.\nReturning to Sign In page....");
-  fclose(fp);
+  fclose(fp1);
+  fclose(fp2);
+  fclose(fp3);
+  fclose(fp4);
   signIn();
 }
 void signIn()
 {
   int w;
-  FILE *fp;
-  char id[32]="UserId=",pass[34]="Password=";
+  FILE *fp1,*fp2,*fp3,*fp4;
+  char rname[35],rid[35],rpass[35],rdob[11];
+  char id[35],pass[35];
   printf("Choose an option:\n1-Student\n2-Faculty\n3-Staff\n4-Back to Main Menu\n");
   scanf("%d",&w);
   switch(w)
   {
-     case 1 : fp=fopen("Student.txt","r");
+     case 1 : fp1=fopen("StudentName.txt","r");
+              fp2=fopen("StudentId.txt","r");
+              fp3=fopen("StudentPass.txt","r");
+              fp4=fopen("StudentDob.txt","r");
               break;
-     case 3 : fp=fopen("Staff.txt","r");
+     case 3 : fp1=fopen("StaffName.txt","r");
+              fp2=fopen("StaffId.txt","r");
+              fp3=fopen("StaffPass.txt","r");
+              fp4=fopen("StaffDob.txt","r");
               break;
-     case 2 : fp=fopen("Faculty.txt","r");
+     case 2 : fp1=fopen("FacultyName.txt","r");
+              fp2=fopen("FacultyId.txt","r");
+              fp3=fopen("FacultyPass.txt","r");
+              fp4=fopen("FacultyDob.txt","r");
               break;
      case 4 : mainMenu();
               break;
-     default : printf("Invalid Option\nReturning to Main Menu..\n");
-               mainMenu();
+     default : printf("Invalid Option\nTry again\n");
+               signIn();
 
   }
-  char c[25];
-  gets(c);
   printf("Enter your UserId: \n");
-  gets(c);
-  strcat(id,c);
+  gets(id);
+  gets(id);
   printf("Enter your Password: \n");
-  gets(c);
-  strcat(pass,c);
-  char rid[32],rpass[34],rname[30];
-  int flag=0;
-  while(!feof(fp))
+  gets(pass);
+  int flag1=0,flag2=0;
+  while(!feof(fp1))
   {
-   fgets(rname,30,fp);
-   fgets(rid,32,fp);
-   fgets(rpass,34,fp);
-   if(strncmp(rid,id,strlen(rid)-1)==0)
+   fgets(rname,35,fp1);
+   fgets(rid,35,fp2);
+   fgets(rpass,35,fp3);
+   fgets(rdob,35,fp4);
+   if((strncmp(rid,id,strlen(rid)-1)==0)&&(strncmp(rpass,pass,strlen(rpass)-1)==0))
    {
-     if(strncmp(rpass,pass,strlen(rpass)-1)==0)
-     {
-       flag=1;break;
-     }
+     flag2=1;flag1=1;break;
+   }
+   else if(strncmp(rid,id,strlen(rid)-1)==0)
+   {
+     printf("Id matched\n");
+     flag1=1;break;
    }
  }
- fclose(fp);
- if (flag==1)
+
+ fclose(fp1);
+ fclose(fp2);
+ fclose(fp3);
+ fclose(fp4);
+ if (flag1==1&&flag2==1)
  {
    if((w==1)|(w==2)) studentPage(rname,strlen(rname));
    else if(w==3) staffPage(rname,strlen(rname));
  }
- else{ printf("Incorrect userid or password.\nReturning to Main menu....");
- mainMenu();}
+ else if(flag1==1){
+    printf("Incorrect Password.\n");
+    printf(" Choose an option \n 1.Try again\n 2.Forgot Password\n Option 1 will be taken by default.\n");
+    int ch=0;
+    scanf("%d",&ch);
+    if(ch==2) forgotPass(rname,rid,rdob);
+    else
+    {
+      printf("Invalid credentials ..Try again\n");
+      signIn();
+    }
+ }
+}
+void forgotPass(char name[35],char id[35],char dob[35])
+{
+  printf("Enter your DateOfBirth");
 }
 void mainMenu()
 {
@@ -131,12 +170,7 @@ void mainMenu()
 }
 void studentPage(char *c, int l)
 {
-  char name[25];
-  for(int i=5;i<=l;i++)
-  {
-    name[i-5]=c[i];
-  }
-  printf("Welcome %s",name);
+  printf("Welcome %s",c);
   printf("Newly added books to the library:\n");
 }
 void staffPage(char *c,int l)
@@ -198,28 +232,16 @@ flag =true;
 //check if this user has issued some book if yes flag=false
 if(flag)
 {
-  int i=0;char ch;
   while(!feof(fp1))
   {
-    ch=fgetc(fp1);
-    for(i=0;ch!='\n';i++)
+    fgets(name,30,fp2);
+    fgets(id,32,fp2);
+    fgets(pass,34,fp2);
+    if(strncmp(uid,id,strlen(id)-1)==0)
     {
-      ch=fgetc(fp1);
+      printf("Found,Deleted");
     }
-    fgets(name,i+1,fp2);printf("%s\n",uid);
-    ch=fgetc(fp1);
-    for(i=0;ch!='\n';i++)
-    {
-      ch=fgetc(fp1);
-    }
-    fgets(id,i+1,fp2);printf("%s\n",name);
-    ch=fgetc(fp1);
-    for(i=0;ch!='\n';i++)
-    {
-      ch=fgetc(fp1);
-    }
-    fgets(pass,i+1,fp2);printf("%s\n",pass);
-    if(strncmp(uid,id,strlen(uid))!=0)
+    else
     {
       fputs(name,fp3);
       fputs(uid,fp3);
