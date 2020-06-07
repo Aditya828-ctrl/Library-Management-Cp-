@@ -7,6 +7,7 @@ typedef struct bklis{
   char Title[60];
   char Genre[30];
   int issue;
+  int count;
   struct bklis *next;
 
 }bklist;
@@ -29,7 +30,7 @@ int menucall(int max,char *str)
    }
    else
    {
-     printf("please write a digit which is greater than > 0 - ");
+     printf("please write a digit which is greater than > 0");
    }
 
   }
@@ -42,26 +43,29 @@ int menucall(int max,char *str)
 bklist *loaddatabase()// declaring  a function of type bklist which returns a pointer
 //this function takes in a string pointer as a paramter
 {
-  FILE *aut,*tit,*gen,*iss;
+
+  FILE *aut,*tit,*gen,*iss,*cnt;
   bklist *header,*point,*commit;
   int count;
   aut = fopen("AUTHOR.txt","r");
   tit = fopen("TITLE.txt","r");
   gen = fopen("Genre.txt","r");
   iss = fopen("issue_no.txt","r");
+  cnt = fopen("Count.txt","r");
   header = (bklist*) malloc(sizeof(bklist));//allocating dynamic memory of size of bklist structure
   if(header == NULL)//this checks if malloc is able to allocate  memory or not
    {
        printf("Unable to allocate memory.");
        exit(0);
    }
-   fgets(header->auth,49,aut);//gets first line from files this "file pointers" are pointing to.
-   fgets(header->Title,59,tit);//gets first line from files this "file pointers" are pointing to.
-   fgets(header->Genre,29,gen);//gets first line from files this "file pointers" are pointing to.
-   fscanf(iss,"%d\n",&header->issue);//gets first line from file issue_no.txt as an integer
-   // this printf below is just for checking the code
-   // printf("%s %s %s %d\n",header->auth,header->Title,header->Genre,header->issue);
-   header->next = NULL;
+   // fgets(header->auth,49,aut);//gets first line from files this "file pointers" are pointing to.
+   // fgets(header->Title,59,tit);//gets first line from files this "file pointers" are pointing to.
+   // fgets(header->Genre,29,gen);//gets first line from files this "file pointers" are pointing to.
+   // fscanf(iss,"%d\n",&header->issue);//gets first line from file issue_no.txt as an integer
+   // fscanf(cnt,"%d\n",&header->count);//gets first line from file issue_no.txt as an integer
+   // // this printf below is just for checking the code
+   // // printf("%s %s %s %d\n",header->auth,header->Title,header->Genre,header->issue);
+   // header->next = NULL;
    //               header
    //               _______
    //              | auth |
@@ -72,11 +76,10 @@ bklist *loaddatabase()// declaring  a function of type bklist which returns a po
    //              ￣￣￣￣
    point = header;//assigning header address to point
   for(count =2;;count++)// count is keeping track of no. of nodes
-  {
-    commit = (bklist*)malloc(sizeof(bklist));
+  { commit = (bklist*)malloc(sizeof(bklist));
     if(commit == NULL)// if system is not able to allocate memory this condition keeps a check on that
        {
-           printf("memory can't be allocated please delete some memory");
+           printf("memory can't be allocated please free some memory");
            break;
        }
        if (fgets(commit->Title,59,tit) == NULL)// fgets reads a new line each time for every iteration of loop
@@ -88,6 +91,7 @@ bklist *loaddatabase()// declaring  a function of type bklist which returns a po
     fgets(commit->auth,49,aut);
     fgets(commit->Genre,29,gen);
     fscanf(iss,"%d\n",&commit->issue);
+    fscanf(cnt,"%d\n",&commit->count);
     commit->next = NULL;
     //all the fgets and fscanf are taking value from newline for every iteration of loop
     //               commit
@@ -132,6 +136,7 @@ bklist *loaddatabase()// declaring  a function of type bklist which returns a po
   fclose(tit);
   fclose(gen);
   fclose(iss);
+  fclose(cnt);
   return header;
 
 }
@@ -199,7 +204,7 @@ return cf;//note: this is returning char pointer
 /************************************************************************************************************/
 /************************************************************************************************************/
 
-bklist deleteabook(char *z){
+bklist booksearch(char *z){
 char (*buk_arr)[100];
 char checkray[1000][3][100];
 buk_arr = stringsplitter(z);
@@ -262,6 +267,6 @@ int main()
   bklist a;
   printf("search for book you want to delete - ");
   gets(str);
-  a = deleteabook(str);
+  a = booksearch(str);
   printf(" %s %s %s",a.auth,a.Title,a.Genre);
 }
