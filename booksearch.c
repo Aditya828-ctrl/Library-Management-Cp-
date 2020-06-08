@@ -241,8 +241,8 @@ for(;temp != NULL;/*po++*/)
 
   temp = temp->next;
  }
- printf("no of matching results%d  \n\n ",po);
- printf(" serial no.\u2006\u2006\n");
+ printf("no of matching results = %d  \n\n ",po);
+
  for(int cnt1=0;cnt1<po;cnt1++)
  {
    printf("     -------------------------------------------------------------------------------\n");
@@ -250,14 +250,18 @@ for(;temp != NULL;/*po++*/)
    printf("     -------------------------------------------------------------------------------\n");
 
  }
-
-printf("\n\nplease select any one of the following books -  ");
-
 int sel;
+if(po)
+{
+printf("\n\nplease select any one of the following books -  ");
 sel = menucall(po,selected_bk);
 strcpy(str_final.auth,checkray[sel-1][0]);
 strcpy(str_final.Title,checkray[sel-1][1]);
 strcpy(str_final.Genre,checkray[sel-1][2]);
+}
+else
+{ printf("Unable to find a book\n");
+  str_final.issue= 0; }
 return str_final;
 }
 /************************************************************************************************************/
@@ -267,6 +271,11 @@ int main()
   bklist a;
   printf("search for book you want to delete - ");
   gets(str);
-  a = booksearch(str);
+  a = booksearch(strupr(str));
+  if(a.issue == 0)
+  {
+    printf("\n\n\n\n\n\n\n\nit's true");
+  }
+  else
   printf(" %s %s %s",a.auth,a.Title,a.Genre);
 }
