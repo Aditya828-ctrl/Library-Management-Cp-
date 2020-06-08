@@ -258,6 +258,7 @@ sel = menucall(po,selected_bk);
 strcpy(str_final.auth,checkray[sel-1][0]);
 strcpy(str_final.Title,checkray[sel-1][1]);
 strcpy(str_final.Genre,checkray[sel-1][2]);
+str_final.issue= 1;
 }
 else
 { printf("Unable to find a book\n");
