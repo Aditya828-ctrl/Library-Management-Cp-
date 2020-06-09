@@ -328,6 +328,8 @@ if (cnt5)
 return finedit;
 }
 
+int dumpfile();
+
 int main(void)
 {
  int oper;
@@ -336,7 +338,8 @@ int main(void)
  bklist *b;
  printf("search for book you want to delete - ");
  gets(str);
- a = booksearch(str);
+
+ a = booksearch(strupr(str));
  printf(" %s %s %s",a.auth,a.Title,a.Genre);
  // scanf("%s %s %s",a.auth,a.Title,a.Genre);
  b = &a;
@@ -345,4 +348,5 @@ int main(void)
  printf(" %s %s %s",b->auth,b->Title,b->Genre);
  returnedbook = editbook(b,oper);
  printf("\n %d  %d",returnedbook->issue,returnedbook->count);
+ z = dumpfile();
 }
