@@ -328,7 +328,6 @@ if (cnt5)
 return finedit;
 }
 
-int dumpfile();
 
 int main(void)
 {
@@ -348,5 +347,5 @@ int main(void)
  printf(" %s %s %s",b->auth,b->Title,b->Genre);
  returnedbook = editbook(b,oper);
  printf("\n %d  %d",returnedbook->issue,returnedbook->count);
- z = dumpfile();
+
 }
