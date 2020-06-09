@@ -174,23 +174,15 @@ void acpt_decline(int a)
 
      if (opt==1)
       {
-  ch = getc(lname);
-
-  while (ch != EOF)
-  {
-      if (ch == '\n')
-          temp++;
-      //except the line to be deleted
-      if(delete_line==1)
-      {
-      if (temp == 2 && ch == '\n') //making sure to skip a blank line if delete_line=1
-          ch = getc(lname);
+        ch = getc(lname);
+        while (ch != EOF)
+        {
+        if(temp != delete_line)
+        putc(ch, rep);
+        if (ch == '\n')
+        temp++;
+        ch = getc(lname);
         }
-      if (temp != delete_line)
-          putc(ch, rep);
-
-      ch = getc(lname);
-  }
   fclose(lname);
   fclose(rep);
   remove("ps_rqt/lname.txt");
@@ -201,18 +193,11 @@ void acpt_decline(int a)
   ch = getc(id);
   while (ch != EOF)
   {
-      if (ch == '\n')
-          temp++;
-      //except the line to be deleted
-      if(delete_line==1)
-      {
-      if (temp == 2 && ch == '\n') //making sure to skip a blank line if delete_line=1
-          ch = getc(lname);
-        }
-      if (temp != delete_line)
-          putc(ch, rep);
-
-      ch = getc(id);
+  if(temp != delete_line)
+  putc(ch, rep);
+  if (ch == '\n')
+  temp++;
+  ch = getc(id);
   }
   fclose(id);
   fclose(rep);
@@ -224,18 +209,11 @@ void acpt_decline(int a)
   ch = getc(dob);
   while (ch != EOF)
   {
-      if (ch == '\n')
-          temp++;
-      //except the line to be deleted
-      if(delete_line==1)
-      {
-      if (temp == 2 && ch == '\n') //making sure to skip a blank line if delete_line=1
-          ch = getc(lname);
-        }
-      if (temp != delete_line)
-          putc(ch, rep);
-
-      ch = getc(dob);
+  if(temp != delete_line)
+  putc(ch, rep);
+  if (ch == '\n')
+  temp++;
+  ch = getc(dob);
   }
   fclose(dob);
   fclose(rep);
@@ -247,18 +225,11 @@ void acpt_decline(int a)
   ch = getc(n_pass);
   while (ch != EOF)
   {
-      if (ch == '\n')
-          temp++;
-      //except the line to be deleted
-      if(delete_line==1)
-      {
-      if (temp == 2 && ch == '\n') //making sure to skip a blank line if delete_line=1
-          ch = getc(lname);
-        }
-      if (temp != delete_line)
-          putc(ch, rep);
-
-      ch = getc(n_pass);
+  if(temp != delete_line)
+  putc(ch, rep);
+  if (ch == '\n')
+  temp++;
+  ch = getc(n_pass);
   }
   fclose(n_pass);
   fclose(rep);
