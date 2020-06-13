@@ -27,6 +27,16 @@ struct member
 };
 struct member *header[3];
 
+typedef struct
+{
+        char stu_fname[30];
+        char stu_lname[40];
+        char stu_id[30];
+        char stu_npass[30];
+        char stu_dob[30];
+        char stu_orgdob[30];
+}detail;
+
 void mainMenu();
 void student(char *, char *);
 void staffPage(char *, char *);
@@ -38,6 +48,8 @@ char* teme();
 void passwordChange(int);
 void loadMembers();
 int isValidDate(Date *validDate);
+void acpt_decline(int a);
+void pssrqst();
 
 void loadMembers()
 {
@@ -68,8 +80,8 @@ void loadMembers()
            prev->next=NULL;
            break;
          }
-         fgets(p->id,50,fp2);
-         fgets(p->pass,50,fp3);
+         fscanf(fp2,"%s", p->id);
+         fscanf(fp3,"%s", p->pass);
          fgets(p->dob,12,fp4);
        }
         //free(p);
@@ -85,8 +97,8 @@ void loadMembers()
         fp3=fopen("FacultyPass.txt","r"); if(fp3==NULL) printf("NULL");
         fp4=fopen("FacultyDob.txt","r"); if(fp4==NULL) printf("NULL");
         fgets(p->name,50,fp1);
-        fgets(p->id,50,fp2);
-        fgets(p->pass,50,fp3);
+        fscanf(fp2,"%s", p->id);
+        fscanf(fp3,"%s", p->pass);
         fgets(p->dob,12,fp4);
         while(true)
         {
@@ -101,8 +113,8 @@ void loadMembers()
            prev->next=NULL;
            break;
          }
-         fgets(p->id,50,fp2);
-         fgets(p->pass,50,fp3);
+         fscanf(fp2,"%s", p->id);
+         fscanf(fp3,"%s", p->pass);
          fgets(p->dob,12,fp4);
        }
         //free(p);
@@ -118,8 +130,8 @@ void loadMembers()
         fp3=fopen("StaffPass.txt","r"); if(fp3==NULL) printf("NULL");
         fp4=fopen("StaffDob.txt","r"); if(fp4==NULL) printf("NULL");
         fgets(p->name,50,fp1);
-        fgets(p->id,50,fp2);
-        fgets(p->pass,50,fp3);
+        fscanf(fp2,"%s", p->id);
+        fscanf(fp3,"%s", p->pass);
         fgets(p->dob,12,fp4);
         while(true)
         {
@@ -134,9 +146,9 @@ void loadMembers()
            prev->next=NULL;
            break;
          }
-         fgets(p->id,50,fp2);
-         fgets(p->pass,50,fp3);
-         fgets(p->dob,12,fp4);
+         fscanf(fp2,"%s", p->id);
+         fscanf(fp3,"%s", p->pass);
+         fscanf(fp4,"%s",p->dob);
        }
         //free(p);
         //free(current);
@@ -153,7 +165,7 @@ void signUp()
 void addMember()
 {
         struct member *current,*p;
-        loadMembers();//to be deleted
+        //loadMembers();//to be deleted
         printf("Enter the type of member to be added...\n\n1.Student\t2-Faculty\t3-Staff\n\n");
         char ch[2];
         scanf("%s",ch);
@@ -224,15 +236,12 @@ void signIn()
         char id[50],pass[50];
         printf("\nEnter your UserId:\t");
         setvbuf(stdout, NULL, _IONBF, 0);
-        fscanf(stdin,"%s", id);
+        fscanf(stdin,"%s", id);printf("(%s)",id);
         printf("\nEnter your Password:\t");
-        fscanf(stdin,"%s", pass);
+        fscanf(stdin,"%s", pass);printf("(%s)",pass);
         struct member *current;
         current=header[i];
         int cmp1,cmp2;
-      //  int i1=strlen(id),i2=strlen(current->id),i3=strlen(pass),i4=strlen(current->pass);
-        //printf("<%d> <%d> <%d> <%d>",i1,i2,i3,i4);
-        //printf("<%s>\n<%s>\n<%s>\n<%s>",id,current->id,pass,current->pass);
         //exit(0);
         bool flag=false;
         while(current!=NULL)
@@ -248,7 +257,8 @@ void signIn()
         if(flag)
         {
                 printf("\nLogged in successfully...\n");
-                if(i==0) student(current->name,current->id);
+                if(i==0&&i==1) student(current->name,current->id);
+                if(i==2) staffPage(current->name,current->id);
         }
         else
         {
@@ -309,7 +319,7 @@ void staffPage(char *name,char *id)
   while(flag)
   {
     printf("1-Add a member\n2-Delete a member\n3-Add a book\n4-Delete a book\n");
-    printf("5-Order a book\n6-Check Inventory\n");
+    printf("5-Order a book\n6-Check Inventory\n7-Check Password Change requests\n");
     int w=0;
     scanf("%d",&w);
     switch(w)
@@ -320,6 +330,7 @@ void staffPage(char *name,char *id)
       //case 4:deleteBook();flag=false;break;
       //case 5:orderBook();flag=false;break;
       //case 6:inventory();flag=false;break;
+      case 7:pssrqst();flag=false;break;
       default:printf("Invalid option...Try again\n");
     }
   }
@@ -329,7 +340,7 @@ void deleteMember()
   char id[50];
   printf("Enter the UserId of the member to be deleted:\n");
   fgets(id,50,stdin);
-  loadMembers();
+  //loadMembers();
   printf("\nChoose the account type:\n\n");
   printf("1.Student\t2.Faculty\t3.Staff\n\n");
   int i;
@@ -654,6 +665,334 @@ int isValidDate(Date *validDate)
             validDate->mm == 9 || validDate->mm == 11)
                 return (validDate->dd <= 30);
         return 1;
+}
+void pssrqst()
+{
+        FILE *lname;
+        FILE *id;
+        FILE *n_pass;
+        FILE *dob;
+        //  int count;
+        // fname = fopen("ps_rqt/fname.txt", "r+");
+        lname = fopen("ps_rqt/lname.txt", "r+");
+        id = fopen("ps_rqt/id.txt", "r+");
+        n_pass = fopen("ps_rqt/n_pass.txt", "r+");
+        dob = fopen("ps_rqt/dob.txt", "r+");
+
+        int Nl = 0;
+        char line[1024];
+        while( fgets(line,1023,id) != NULL)
+        {
+                Nl++;
+        }
+
+        rewind(id);
+        //printf("%d",Nl);          //to check total numbers of entries
+        printf("\t\t\t\t\t\t\t\t ------------------------\n");
+        printf("\t\t\t\t\t\t\t\t Password Reset Request(s)\n");
+        printf("\t\t\t\t\t\t\t\t ------------------------\n\n\n\n");
+
+        detail *stu;
+        stu = (detail*)malloc(sizeof(detail));
+
+        for (int i = 0; i < Nl; i++)
+        {
+
+                fgets(stu->stu_lname,39,lname);
+                fscanf(id, "%s", stu->stu_id);
+                fscanf(n_pass, "%s", stu->stu_npass);
+                fscanf(dob, "%s", stu->stu_dob);
+                printf("--------------------------------------------------\n");
+                printf("%d. | Name : ",i+1);
+                fputs(stu->stu_lname,stdout);
+                printf("   | UserID : %s\n",stu->stu_id);
+                // printf("   | New_Password: %s\n",stu->stu_npass);
+                // printf("   | DOB : %s\n",stu->stu_dob);
+                printf("--------------------------------------------------\n");
+        }
+        printf("\n\n");
+        printf("#. Main Menu\t\t\t0. Previous Menu\n\n");
+        fclose(lname);
+        fclose(id);
+        fclose(n_pass);
+        fclose(dob);
+
+        char *choose;
+        printf("\n\nSelect one option:\t");
+        choose = (char*)malloc(sizeof(char));
+        scanf("%s",choose);
+        // printf("%s",choose);
+
+        int choice=atoi(choose);
+        // printf("%d",choice);
+        for(int i=0; i<Nl; i++)
+        {
+                if(choice==(i+1))
+                {
+                        system("clear");
+                        acpt_decline(choice);
+                        //return 0;
+                }
+                else if (strcmp(choose, "#") == 0)
+                {
+                        pssrqst();    //need to link to admin home page
+                }
+                else if(i+1==Nl)
+                {
+                        //printf("Enter a valid option:\t");
+                        printf("Invalid option; Choose again ");
+                        for(int j=0; j<3; j++)
+                        {
+                                sleep(1);
+                                printf(".");
+                        }
+                        system("clear");
+                        pssrqst();
+
+                }
+        }
+
+}
+
+void acpt_decline(int a)
+{
+        FILE *lname;
+        FILE *id;
+        FILE *n_pass;
+        FILE *dob;
+        FILE *rep;
+        FILE *orgdob;
+        FILE *pass;
+        orgdob = fopen("ps_rqt/StudentDob.txt","r");
+        pass = fopen("StudentPass.txt","r");
+        rep = fopen("ps_rqt/rep.txt", "w+");
+        lname = fopen("ps_rqt/lname.txt", "r");
+        id = fopen("ps_rqt/id.txt", "r");
+        n_pass = fopen("ps_rqt/n_pass.txt", "r");
+        dob = fopen("ps_rqt/dob.txt", "r");
+
+        detail *stu;
+        stu = (detail*)malloc(sizeof(detail));
+
+        char ch;
+        int delete_line = a, temp = 1;
+
+        printf("\t\t\t\t\t\t\t\t ------------------------\n");
+        printf("\t\t\t\t\t\t\t\t Password Reset Request(s)\n");
+        printf("\t\t\t\t\t\t\t\t ------------------------\n\n\n\n");
+        int i;
+        for (i = 0; i < a; i++)
+        {
+
+                fgets(stu->stu_lname, 39, lname);
+                fscanf(id, "%s", stu->stu_id);
+                fscanf(n_pass, "%s", stu->stu_npass);
+                fscanf(dob, "%s", stu->stu_dob);
+                fscanf(orgdob,"%s",stu->stu_orgdob);
+
+        }
+        fclose(lname);
+        fclose(dob);
+        fclose(n_pass);
+        fclose(id);
+        fclose(orgdob);
+
+
+        FILE *studentid;
+        char line[1024],input[255];
+        int Nl,cmp,var2=-1;
+        studentid = fopen("StudentId.txt","r"); if(studentid==NULL) printf("NULL");
+        while( fgets(line,1023,studentid) != NULL)
+        {
+                Nl++;
+        }
+//printf("%d\n",Nl);
+        rewind(studentid);
+        fgets(input,sizeof(input),studentid);
+        input[strcspn(input, "\n")] = '\0';
+        for(int z=0; z<Nl; z++)
+        {
+                cmp=strcmp(input,stu->stu_id);
+                //printf("%d\n",cmp );
+                if(cmp==1 || cmp==-1)
+                {
+                        cmp=9;
+                }
+                if(cmp==0)
+                {
+                        var2=z+1;
+                        cmp++;
+                        break;
+                }
+                fgets(input,sizeof(input),studentid);
+                input[strcspn(input, "\n")] = '\0';
+        }
+        //printf("%d\n %d\n",var2,cmp );
+        //printf("<%s> <%s>\n",stu->stu_id,input);
+        //printf("<%s>\n",stu->stu_npass );
+//sprintf(stu->stu_npass, "%s\n",stu->stu_npass);
+        //printf("<%s>\n",stu->stu_npass );
+
+        printf("--------------------------------------------------\n");
+        printf("%d. | Name : ", i);
+        fputs(stu->stu_lname, stdout);
+        printf("   | UserID : %s\n", stu->stu_id);
+        printf("   | New_Password: %s\n", stu->stu_npass);
+        printf("   | DOB : %s\n   | Original_DOB: %s\n", stu->stu_dob,stu->stu_orgdob);
+        printf("--------------------------------------------------\n\n\n");
+        printf("1. Accept\t\t\t2. Decline\n\n");
+        char *chopt;
+        chopt = (char *)malloc(sizeof(char));
+        int opt;
+        printf("Enter valid option:\t");
+        scanf("%s",chopt);
+        opt=atoi(chopt);
+        //printf("%d\n",opt);
+
+        lname = fopen("ps_rqt/lname.txt", "r");
+        id = fopen("ps_rqt/id.txt", "r");
+        n_pass = fopen("ps_rqt/n_pass.txt", "r");
+        dob = fopen("ps_rqt/dob.txt", "r");
+        orgdob = fopen("ps_rqt/StudentDob.txt","r");
+
+        if (opt==1)
+        {
+                ch = getc(lname);
+                while (ch != EOF)
+                {
+                        if(temp != delete_line)
+                                putc(ch, rep);
+                        if (ch == '\n')
+                                temp++;
+                        ch = getc(lname);
+                }
+                fclose(lname);
+                fclose(rep);
+                remove("ps_rqt/lname.txt");
+                rename("ps_rqt/rep.txt","ps_rqt/lname.txt");
+
+                temp=1;
+                rep = fopen("ps_rqt/rep.txt", "w+");
+                ch = getc(id);
+                while (ch != EOF)
+                {
+                        if(temp != delete_line)
+                                putc(ch, rep);
+                        if (ch == '\n')
+                                temp++;
+                        ch = getc(id);
+                }
+                fclose(id);
+                fclose(rep);
+                remove("ps_rqt/id.txt");
+                rename("ps_rqt/rep.txt","ps_rqt/id.txt");
+
+                temp=1;
+                rep = fopen("ps_rqt/rep.txt", "w");
+                ch = getc(dob);
+                while (ch != EOF)
+                {
+                        if(temp != delete_line)
+                                putc(ch, rep);
+                        if (ch == '\n')
+                                temp++;
+                        ch = getc(dob);
+                }
+                fclose(dob);
+                fclose(rep);
+                remove("ps_rqt/dob.txt");
+                rename("ps_rqt/rep.txt","ps_rqt/dob.txt");
+
+                temp=1;
+                rep = fopen("ps_rqt/rep.txt", "w");
+                ch = getc(n_pass);
+                while (ch != EOF)
+                {
+                        if(temp != delete_line)
+                                putc(ch, rep);
+                        if (ch == '\n')
+                                temp++;
+                        ch = getc(n_pass);
+                }
+                fclose(n_pass);
+                fclose(rep);
+                remove("ps_rqt/n_pass.txt");
+                rename("ps_rqt/rep.txt","ps_rqt/n_pass.txt");
+
+                temp=1;
+                rep = fopen("ps_rqt/rep.txt", "w");
+                ch = getc(orgdob);
+                while (ch != EOF)
+                {
+                        if(temp != delete_line)
+                                putc(ch, rep);
+                        if (ch == '\n')
+                                temp++;
+                        ch = getc(orgdob);
+                }
+                fclose(orgdob);
+                fclose(rep);
+                remove("ps_rqt/StudentDob.txt");
+                rename("ps_rqt/rep.txt","ps_rqt/StudentDob.txt");
+
+                temp=1;
+                //FILE *rep2;
+                sprintf(stu->stu_npass, "%s\n",stu->stu_npass);
+                rep = fopen("rep.txt", "w");
+                ch = getc(pass);
+                while (ch != EOF)
+                {
+                        if(temp != var2)
+                                putc(ch, rep);
+                        //printf("%c",ch );
+                        if(ch == '\n' && temp==var2) {
+                                //fputs(stu->stu_npass,rep);
+                                fprintf(rep,"%s",stu->stu_npass);
+                                //printf("%s",stu->stu_npass);
+                        }
+                        if (ch == '\n')
+                                temp++;
+                        ch = getc(pass);
+                }
+                fclose(pass);
+                fclose(rep);
+// sleep(200);
+                remove("StudentPass.txt");
+                rename("rep.txt","StudentPass.txt");
+                printf("Returning to Previous Menu");
+                for(int j=0; j<3; j++)
+                {
+                        sleep(1);
+                        printf(".");
+                }
+                system("clear");
+                pssrqst();
+
+        }
+
+        else if (opt==2)
+        {
+                printf("\n\nReturning to Previous Menu");
+                for(int j=0; j<3; j++)
+                {
+                        sleep(1);
+                        printf(".");
+                }
+                system("clear");
+                pssrqst();
+        }
+        else
+        {
+                printf("Invalid option; Choose again");
+                for(int j=0; j<3; j++)
+                {
+                        sleep(1);
+                        printf(".");
+                }
+                system("clear");
+                acpt_decline(a);
+        }
+
 }
 int main()
 {
