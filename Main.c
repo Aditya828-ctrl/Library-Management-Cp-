@@ -15,6 +15,16 @@ typedef struct cartbook
   char *id;
   struct cartbook *next;
 }cartstruct;
+typedef struct odr{
+  char au_name[50];
+  char bk_name[60];
+  char qty[30];
+  int odrid;
+  char stat[30];
+  char vndr[30];
+  char gen[30];
+  struct odr *next;
+}order;//declared a structure of type order
 typedef struct reqbook
 {
   char *title;
@@ -60,53 +70,56 @@ struct cartbook *headis;//Issue Books
 struct cartbook *headrv;//Reserved Books
 struct reqbook  *headrq;//Requested Books
 
-void mainMenu();
-void student(char *, char *);
-void studentPage(char *id);
-void staffPage(char *, char *);
-void addMember();
-void signIn();
-void deleteMember();
-void uploadMembers();
-char* teme();
-void passwordChange(int);
-void loadMembers();
-int isValidDate(Date *validDate);
-void acpt_decline(int a);
-void pssrqst();
-int menucallking(int max,char *str);//TANISH 1011
-void showBookRequests();
-char (*stringsplitter(char *z))[100];//TANISH 1137
-bklist *loaddatabase();//TANISH 1037
-bklist bookSearch(char *z);//TANISH 1196
-int dumpdatabase(bklist* a);//TANISH 1260
-void issueBook(char *);
-void reserveBook(bklist *,char*);
-void requestBook(char *);
-bool loadCart(bklist *,char *);
-bool isReserved(bklist *book,char *id);
-char* toUpperCase(char *s);
-cartstruct* headLoader2(char *file1,char *file2);
-void cart(cartstruct *header);
-void headLoader3(char *file1,char *file2,char *file3);
-int dumpres(cartstruct* a);
-int dumpres1(cartstruct* a);
-void dumpreq();
-int dumpadd(cartstruct* a);
-void studentPage(char *id);
-bklist* getBook(bklist *a);
-bklist *nth_link(bklist *head, int i);
-cartstruct* cartissuelistloader(char *file, char *file1);
-bklist bookcheck(bklist* a, int i);
-bklist* issuebook(cartstruct* cartissuehead, bklist* maindatabaseheader);
-cartstruct *specificuserloader(char *s);
-cartstruct *specificuserloader1(char *s);
-int print(bklist *header, int i,char *z);
-int menucall(int max);
-bklist editbook(bklist* z, int i, bklist *a);
-cartstruct editlist(bklist* z, int i, char* str, cartstruct *a);
-void cart(cartstruct *header);
-void loadMembers();
+void mainMenu();//ADITYA
+void *bookorder(order *z);//AMAN
+bool approvingRequest(char *str1,char *str2);//AMAN
+void student(char *, char *);//ADITYA
+void studentPage(char *id);//ADITYA
+void staffPage(char *, char *);//ADITYA
+void staffMenu();//ADITYA
+void addMember();//ADITYA
+void signIn();//ADITYA
+bool approveRequest(int);//ADITYA
+void deleteMember();//ADITYA
+void uploadMembers();//ADITYA
+char* teme();//AAYUSH
+void passwordChange(int);//AAYUSH
+void loadMembers();//ADITYA
+int isValidDate(Date *validDate);//AAYUSH
+void acpt_decline(int a);//AAYUSH
+void pssrqst();//AAYUSH
+struct reqbook* nthNode(int n);//ADITYA
+int menucallking(int max,char *str);//TANISH
+void showBookRequests();//ADITYA
+char (*stringsplitter(char *z))[100];//TANISH
+bklist *loaddatabase();//TANISH
+bklist bookSearch(char *z);//TANISH
+int dumpdatabase(bklist* a);//TANISH
+void issueBook(char *);//ADITYA
+void reserveBook(bklist *,char*);//ADITYA
+void requestBook(char *);//ADITYA
+bool loadCart(bklist *,char *);//ADITYA
+bool isReserved(bklist *book,char *id);//ADITYA
+char* toUpperCase(char *s);//ADITYA
+cartstruct* headLoader2(char *file1,char *file2);//TANISH
+void cart(cartstruct *header);//TANISH
+void headLoader3(char *file1,char *file2,char *file3);//ADITYA
+int dumpres(cartstruct* a);//TANISH
+int dumpres1(cartstruct* a);//TANISH
+void dumpreq();//ADITYA
+int dumpadd(cartstruct* a);//TANISH
+bklist* getBook(bklist *a);//ADITYA
+bklist *nth_link(bklist *head, int i);//TANISH
+cartstruct* cartissuelistloader(char *file, char *file1);//TANISH
+bklist bookcheck(bklist* a, int i);//TANISH
+bklist* issuebook(cartstruct* cartissuehead, bklist* maindatabaseheader);//TANISH
+cartstruct *specificuserloader(char *s);//TANISH
+cartstruct *specificuserloader1(char *s);//TANISH
+int print(bklist *header, int i,char *z);//TANISH
+int menucall(int max);//TANISH
+bklist editbook(bklist* z, int i, bklist *a);//TANISH
+cartstruct editlist(bklist* z, int i, char* str, cartstruct *a);//TANISH
+void loadMembers();//ADITYA
 
 void loadMembers()
 {
@@ -223,7 +236,8 @@ void addMember()
 {
         struct member *current,*p;
         //loadMembers();//to be deleted
-        printf("Enter the type of member to be added...\n\n1.Student\t2-Faculty\t3-Staff\n\n");
+        printf("Enter the type of member to be added...\n\n1.Student");
+        printf("\t2-Faculty\t3-Staff\n\n");
         char ch[2];
         scanf("%s",ch);
         int w=atoi(ch); int i;
@@ -232,7 +246,8 @@ void addMember()
         case 1: i=0; break;
         case 2: i=1; break;
         case 3: i=2; break;
-        default: printf("Only 1,2,3 are acceptable values\n"); sleep(2); system("clear"); addMember();
+        default: printf("Only 1,2,3 are acceptable values\n");
+                sleep(2); system("clear"); addMember();
         }
         char name[50],id[50],pass[50],*dob;
         //bool flag1=true,flag2=false;
@@ -293,9 +308,9 @@ void signIn()
         char id[50],pass[50];
         printf("\nEnter your UserId:\t");
         setvbuf(stdout, NULL, _IONBF, 0);
-        fscanf(stdin,"%s", id);printf("(%s)",id);
+        fscanf(stdin,"%s", id);//printf("(%s)",id);
         printf("\nEnter your Password:\t");
-        fscanf(stdin,"%s", pass);printf("(%s)",pass);
+        fscanf(stdin,"%s", pass);//printf("(%s)",pass);
         struct member *current;
         current=header[i];
         int cmp1,cmp2;
@@ -314,7 +329,7 @@ void signIn()
         if(flag)
         {
                 printf("\nLogged in successfully...\n");
-                if(i==0&&i==1) student(current->name,current->id);
+                if(i==0||i==1) student(current->name,current->id);
                 if(i==2) staffPage(current->name,current->id);
         }
         else
@@ -336,7 +351,6 @@ void signIn()
                 {
               system("clear");signIn();
         }}
-      signIn();
     }
 
 
@@ -367,27 +381,7 @@ void staffPage(char *name,char *id)
 {
   printf("Welcome %s",name);
   printf("What do you want to do?\nChoose an option.\n");
-  bool flag=true;
-  while(flag)
-  {
-    printf("1-Add a member\n2-Delete a member\n3-Add a book\n4-Delete a book\n");
-    printf("5-Order a book\n6-Check Inventory\n7-Check Password Change requests\n");
-    printf("8-Check Pending Book Requests\n");
-    int w=0;
-    scanf("%d",&w);
-    switch(w)
-    {
-      case 1:addMember();flag=false;break;
-      case 2:deleteMember();flag=false;break;
-      //case 3:addBook();flag=false;break;
-      //case 4:deleteBook();flag=false;break;
-      //case 5:orderBook();flag=false;break;
-      //case 6:inventory();flag=false;break;
-      case 7:pssrqst();flag=false;break;
-      case 8:showBookRequests();flag=false;break;
-      default:printf("Invalid option...Try again\n");
-    }
-  }
+  staffMenu();
 }
 void deleteMember()
 {
@@ -613,7 +607,8 @@ void passwordChange(int i)//i=0->Student,i=1->Faculty,i=2->Staff
         printf("%d\n %d\n",var2,cmp );
         if(cmp!=1)
         {
-                printf("No matching UserID found\n\n1. Become a member\t\t2. Try again\n\n");
+                printf("No matching UserID found\n\n1. Become a member\t\t");
+                printf("2. Try again\n\n");
                 scanf("%s",ch_);
                 ch1=atoi(ch_);
                 //if(ch1==1)    //Aditya ka kaam
@@ -678,7 +673,8 @@ void passwordChange(int i)//i=0->Student,i=1->Faculty,i=2->Staff
         //sprintf(dataString, "%02d-%02d-%04d\n", getDate.dd, getDate.mm, getDate.yyyy);
         fputs(nme,lname);
         fputs(odob,o_dob_r);
-        printf("\n\nYour request saved successfully.\n\nWait for a Staff member to approve it.");
+        printf("\n\nYour request saved successfully.\n\nWait for a");
+        printf(" Staff member to approve it.");
         system("clear");
         fclose(lname);
         fclose(id_);
@@ -1052,10 +1048,77 @@ void acpt_decline(int a)
         }
 
 }
-//void showBookRequests()
-//{
-  //headrq=
-//}
+void showBookRequests()
+{
+  headLoader3("RequestedTitle.txt","RequestedAuName.txt","RequestedId.txt");
+  if(headrq->next==NULL)
+  {
+    printf("No Pending book requests.\n");
+    printf("Going back to main page...\n");
+    staffMenu();
+  }
+  struct reqbook *current;
+  current=headrq->next;int i=1;
+  while(current!=NULL)
+  {
+    printf("-----------------------------------------------------------------");
+    printf("%d. Title of the book: '%s'\n",current->title,i);
+    printf("   Name of author: '%s'\n",current->auname);
+    printf("   Requested by Id: '%s'\n");
+    current=current->next;i++;
+  }
+  printf("-----------------------------------------------------------------");
+  printf("Enter the corresponding no. to approve the request");
+  printf(" and order the book.\n");
+  //We may add delete request also..
+  i=0;
+  scanf("%d",&i);
+  approveRequest(i);
+}
+bool approveRequest(int i)
+{
+  //check if this book has already been ordered ask to order Again
+  //if no return false
+  struct reqbook *orb;
+  orb=nthNode(i);
+  if(approvingRequest(orb->auname,orb->title))
+  {
+    FILE *fp1,*fp2,*fp3;
+    fp1=fopen("ApprovedRequestTitle.txt","a");
+    fp2=fopen("ApprovedRequestAuthor.txt","a");
+    fp3=fopen("ApprovedRequestUserId,txt","a");
+    fputs(orb->title,fp1);
+    fputs(orb->auname,fp2);
+    fputs(orb->id,fp3);
+    fclose(fp1);
+    fclose(fp2);
+    fclose(fp3);
+    struct reqbook *current,*prev;
+    current=headrq->next;
+    prev=headrq;
+    while(current!=NULL)
+    {
+      int cmp1=strcmp(orb->auname,current->auname);
+      int cmp2=strcmp(orb->title,current->title);
+      int cmp3=strcmp(orb->id,current->id);
+      if(cmp1==0&&cmp2==0&&cmp3==0)
+      {
+        prev->next=current->next;
+        current=NULL;
+        dumpreq();
+        break;
+      }
+      prev=current;
+      current=current->next;
+    }
+  }
+  else
+  {
+    printf("Something went wrong.You may Try again.\n");
+    staffMenu();
+  }
+
+}
 int menucallking(int max,char *str)
 {
   for(int ty = 0;ty ==0;)
@@ -1328,7 +1391,6 @@ for(temp = a->next, cont=0;;temp = temp->next)
  {
    break;
  }
-
 }
 fclose(aut);
 fclose(tit);
@@ -1342,9 +1404,8 @@ void studentPage(char *id)
  head=loaddatabase();
  headis=(struct cartbook*)malloc(sizeof(struct cartbook));
  headis->next=NULL;printf("a");
- FILE *fp;
- fp=fopen("ReservedBooks.txt","w");
- headrv=headLoader2("ReservedUserId.txt","ReservedBooks.txt");printf("b");
+// headrv=headLoader2("ReservedUserId.txt","ReservedBooks.txt");printf("b");
+//headLoader2 at 1705
  headLoader3("RequestedTitle.txt","RequestedAuName.txt","RequestedId.txt");
  printf("Choose an option.\n");
  printf("1.Issue a Book\n");
@@ -1662,9 +1723,12 @@ cartstruct* headLoader2(char *file1, char *file2)//TANISH
      commit = NULL;// to avoid dangling pointer problem
      break;
    }
+   printf("%s",commit->id);
 printf("7");
- fscanf(iss, "%d\n", &commit->issue);printf("8");
-   commit->next = NULL;printf("8");
+char ch[255];
+ fgets(ch,255,iss);printf("8");
+ commit->issue=atoi(ch);printf("9");
+   commit->next = NULL;printf("10");
    // printf("\n%s23\n  %d",commit->id, commit->issue);
    temp->next = commit;
 
@@ -1675,7 +1739,6 @@ printf("7");
 return carthead;
 
 }
-bklist *nth_link(bklist *head, int i);
 
 cartstruct* cartissuelistloader(char *file, char *file1)
 {
@@ -2234,6 +2297,189 @@ void cart(cartstruct *header)
 
 }
 //edit editlist properly once
+void staffMenu()
+{
+  bool flag=true;
+  while(flag)
+  {
+    printf("1-Add a member\n2-Delete a member\n3-Add a book\n4-Delete a book\n");
+    printf("5-Order a book\n6-Check Inventory\n7-Check Password Change requests\n");
+    printf("8-Check Pending Book Requests\n");
+    int w=0;
+    scanf("%d",&w);
+    switch(w)
+    {
+      case 1:addMember();flag=false;break;
+      case 2:deleteMember();flag=false;break;
+      //case 3:addBook();flag=false;break;
+      //case 4:deleteBook();flag=false;break;
+      //case 5:orderBook();flag=false;break;
+      //case 6:inventory();flag=false;break;
+      case 7:pssrqst();flag=false;break;
+      case 8:showBookRequests();flag=false;break;
+      default:printf("Invalid option...Try again\n");
+    }
+  }
+}
+struct reqbook* nthNode(int n)
+{
+  bool flag=true;
+  struct reqbook *current;
+  current=headrq;
+  int i=1;
+  for(;i<=n;i++)
+  {
+    current=current->next;
+    if(current==NULL)
+    {
+      printf("There are only  %d nodes in this list.\n",(i-1));
+      flag=false;
+      break;
+    }
+    if(flag)
+    {
+      return current;
+    }
+    return NULL;
+  }
+}
+void *bookorder(order *z)// declaring  a function
+//this function takes in a string pointer as a paramter
+{
+  FILE *auth,*bookname,*quantity,*orderid,*status,*vendor,*genre; // declaring file pointer
+  order *header,*point,*commit;
+  int count,orderidcount;
+  auth = fopen("author.txt","r+");
+  bookname = fopen("bookname.txt","r+");
+  quantity = fopen("qty.txt","r+");
+  orderid = fopen("orderid.txt","r+");
+  status = fopen("status.txt","r+");
+  vendor = fopen("vendor.txt","r+");
+  genre = fopen("genre.txt","r+");
+  header = (order*) malloc(sizeof(order));//allocating dynamic memory of size of order structure
+  if(header == NULL) //this checks if malloc is able to allocate  memory or not
+   {
+       printf("Unable to allocate memory.");
+       exit(0);
+   }
+   fgets(header->au_name,49,auth); //gets first line from files this "file pointers" are pointing to.
+   fgets(header->bk_name,59,bookname);//gets first line from files this "file pointers" are pointing to.
+   fgets(header->qty,29,quantity);//gets first line from files this "file pointers" are pointing to.
+   fscanf(orderid,"%d\n",&header->odrid);//gets first line from file orderid.txt as an integer
+   fgets(header->stat,29,status);//gets first line from files this "file pointers" are pointing to.
+   fgets(header->vndr,29,vendor);//gets first line from files this "file pointers" are pointing to.
+   fgets(header->gen,29,genre);//gets first line from files this "file pointers" are pointing to.
+   // this printf below is just for checking the code
+    //printf("%s %s %s %d\n",header->au_name,header->bk_name,header->qty,header->odrid,header->stat);
+   header->next = NULL;
+   //               header
+   //               _________
+   //              | au_name |
+   //              | bk_name |
+   //              | qty     |
+   //              | odrid   |
+   //   	   | stat    |
+   //    	   | vendor  |
+   //              | next    | ---pointing to----> NULL
+   //              ￣￣￣￣￣￣
+  point = header; //assigning header address to point
+  for(count =2;;count++) // count is keeping track of no. of nodes
+  { commit = (order*)malloc(sizeof(order));
+    if(commit == NULL)// if system is not able to allocate memory this condition keeps a check on that
+       {
+           printf("memory can't be allocated please delete some memory");
+           break;
+       }
+       if (fgets(commit->bk_name,59,bookname) == NULL)// fgets reads a new line each time for every iteration of loop
+       //and if the new line doesn't points to anything i.e. emptyline then is condition breaks the loop
+       { free(commit); // done to avoid memory leak
+         commit = NULL; // to avoid dangling pointer problem
+         break; // breaking loop
+       }
+
+    fgets(commit->au_name,49,auth);
+    fgets(commit->qty,29,quantity);
+    fscanf(orderid,"%d\n",&commit->odrid);
+    fgets(commit->stat,29,status);
+    fgets(commit->vndr,29,vendor);
+    fgets(commit->gen,29,genre);
+    orderidcount = commit->odrid;
+    commit->next = NULL;
+    //all the fgets and fscanf are taking value from newline for every iteration of loop
+    //               commit
+    //               _______
+    //              | au_name |
+    //              | title|
+    //              | qty|
+    //              | odrid|
+    //              | next | ---pointing to----> NULL
+    //              ￣￣￣￣
+    point->next = commit;
+    //               point                       commit
+    //               _______                ➚    _______
+    //              | au_name |             ➚      | au_name |
+    //              | title|          ➚         | title|
+    //              | qty|       ➚            | qty|
+    //              | odrid|    ➚               | odrid|
+    //              | next | ➚                  | next | ---pointing to----> NULL
+    //              ￣￣￣￣                     ￣￣￣￣
+    //              point-> is pointing to commit which links commit to linked list
+    //              and now commit->next is pointing to NULL
+
+    point = point->next;//now in each iteration of loop point's adress is changed to where point->next is
+    //pointing to i.e to commit structure. this helps in adding entire data in linked list format
+    //               point                        point(after 1st iteration) point(after 2nd iteration)  commit
+    //               _______                ➚    _______                ➚   _______                ➚   _______
+    //              | au_name |             ➚      | au_name |             ➚     | au_name |             ➚     | au_name |
+    //              | title|          ➚         | title|         ➚         | title|         ➚         | title|
+    //              | qty|       ➚            | qty|      ➚            | qty|      ➚            | qty|
+    //              | odrid|    ➚               | odrid|   ➚               | odrid|   ➚               | odrid|
+    //              |*next | ➚                  |*next |➚                  |*next |➚                  |*next |---pointing to----> NULL
+
+
+    // this printf below is just for checking the code
+     //printf("%s %s %s %d\n",point->au_name,point->bk_name,point->qty,point->odrid);
+
+  }
+  fprintf(auth,"%s\n",z->au_name);
+  fprintf(bookname,"%s\n",z->bk_name);
+  fprintf(quantity,"%s\n",z->qty);
+  fprintf(orderid,"%d\n",orderidcount+1);
+  fprintf(status,"PENDING\n",z->stat);
+  fprintf(vendor,"%s\n",z->vndr);
+  fprintf(genre,"%s\n",z->gen);
+  // this printf below is just for checking the code
+  // printf("%s %s %s %d\n",z->au_name,z->bk_name,z->qty,orderidcount+1);
+  fclose(auth);
+  fclose(bookname);
+  fclose(quantity);
+  fclose(orderid);
+  fclose(status);
+  fclose(vendor);
+  fclose(genre);
+}
+bool approvingRequest(char *str1,char *str2)
+{
+order *c;
+c = (order*)malloc(sizeof(order));
+//printf("Enter Author Name = ");
+strcpy(c->au_name,str1);
+//printf("Enter Book Name = ");
+strcpy(c->bk_name,str2);
+printf("Enter Quantity = ");
+fgets(c->qty,20, stdin);
+printf("Enter Vendor Name = ");
+fgets(c->vndr,20, stdin);
+printf("Enter Genre = ");
+fgets(c->gen,20, stdin);
+bookorder(c);// function takes in string pointer as parameter and returns the header which helps in access of the linked list
+printf("\n-----------------------You Have Successfully Placed an Order---");
+printf("---------------\n-----------------------Thank You--------------------");
+printf("---\n-----------------------Returning Back To Book Requests Page---------");
+printf("--------------\n");
+return true;
+}
+
 int main()
 {
   loadMembers();
