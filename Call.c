@@ -1,5 +1,5 @@
 #include"studentPage.h"
 int main(void)
 {
-  studentPage("ther");
+  studentPage("g36c");
 }

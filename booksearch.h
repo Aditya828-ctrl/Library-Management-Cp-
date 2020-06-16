@@ -12,7 +12,7 @@ typedef struct bklis{
 
 }bklist;
 
-int menucall(int max,char *str)
+int menucallking(int max,char *str)
 {
   for(int ty = 0;ty ==0;)
   {
@@ -43,7 +43,6 @@ int menucall(int max,char *str)
 extern bklist *loaddatabase()// declaring  a function of type bklist which returns a pointer
 //this function takes in a string pointer as a paramter
 {
-
   FILE *aut,*tit,*gen,*iss,*cnt;
   bklist *header,*point,*commit;
   int count;
@@ -261,7 +260,7 @@ for(;temp != NULL;/*po++*/)
 printf("\n\nplease select any one of the following books -  ");
 
 int sel;
-sel = menucall(po,selected_bk);
+sel = menucallking(po,selected_bk);
 strcpy(str_final.auth,checkray[sel-1][0]);
 strcpy(str_final.Title,checkray[sel-1][1]);
 strcpy(str_final.Genre,checkray[sel-1][2]);

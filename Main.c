@@ -50,6 +50,7 @@ void loadMembers();
 int isValidDate(Date *validDate);
 void acpt_decline(int a);
 void pssrqst();
+void showBookRequests();
 
 void loadMembers()
 {
@@ -308,11 +309,6 @@ void student(char *name, char *id)
 }
 void staffPage(char *name,char *id)
 {
-  //char name[25];
-  //for(int i=5;i<=l;i++)
-  //{
-    //name[i-5]=c[i];
-  //}
   printf("Welcome %s",name);
   printf("What do you want to do?\nChoose an option.\n");
   bool flag=true;
@@ -320,6 +316,7 @@ void staffPage(char *name,char *id)
   {
     printf("1-Add a member\n2-Delete a member\n3-Add a book\n4-Delete a book\n");
     printf("5-Order a book\n6-Check Inventory\n7-Check Password Change requests\n");
+    printf("8-Check Pending Book Requests\n");
     int w=0;
     scanf("%d",&w);
     switch(w)
@@ -331,6 +328,7 @@ void staffPage(char *name,char *id)
       //case 5:orderBook();flag=false;break;
       //case 6:inventory();flag=false;break;
       case 7:pssrqst();flag=false;break;
+      case 8:showBookRequests();flag=false;break;
       default:printf("Invalid option...Try again\n");
     }
   }
@@ -685,9 +683,9 @@ void pssrqst()
         {
                 Nl++;
         }
+        //printf("%d",Nl);          //to check total numbers of entries
 
         rewind(id);
-        //printf("%d",Nl);          //to check total numbers of entries
         printf("\t\t\t\t\t\t\t\t ------------------------\n");
         printf("\t\t\t\t\t\t\t\t Password Reset Request(s)\n");
         printf("\t\t\t\t\t\t\t\t ------------------------\n\n\n\n");
@@ -800,7 +798,7 @@ void acpt_decline(int a)
 
         FILE *studentid;
         char line[1024],input[255];
-        int Nl,cmp,var2=-1;
+        int Nl=0,cmp,var2=-1;
         studentid = fopen("StudentId.txt","r"); if(studentid==NULL) printf("NULL");
         while( fgets(line,1023,studentid) != NULL)
         {
@@ -808,13 +806,15 @@ void acpt_decline(int a)
         }
 //printf("%d\n",Nl);
         rewind(studentid);
-        fgets(input,sizeof(input),studentid);
+        fscanf(studentid,"%s", input);
         input[strcspn(input, "\n")] = '\0';
         for(int z=0; z<Nl; z++)
         {
+          int as=strlen(input),vvv=strlen(stu->stu_id);
+          printf("<%s>-%d   <%s>-%d\n",input,as,stu->stu_id,vvv );
                 cmp=strcmp(input,stu->stu_id);
                 //printf("%d\n",cmp );
-                if(cmp==1 || cmp==-1)
+                if(cmp>0 || cmp<0)
                 {
                         cmp=9;
                 }
@@ -824,10 +824,10 @@ void acpt_decline(int a)
                         cmp++;
                         break;
                 }
-                fgets(input,sizeof(input),studentid);
+               fscanf(studentid,"%s", input);
                 input[strcspn(input, "\n")] = '\0';
         }
-        //printf("%d\n %d\n",var2,cmp );
+        printf("%d\n %d\n",var2,cmp );
         //printf("<%s> <%s>\n",stu->stu_id,input);
         //printf("<%s>\n",stu->stu_npass );
 //sprintf(stu->stu_npass, "%s\n",stu->stu_npass);
@@ -942,12 +942,13 @@ void acpt_decline(int a)
                 ch = getc(pass);
                 while (ch != EOF)
                 {
+                      //  printf("%d__%d\n",temp,var2);
                         if(temp != var2)
                                 putc(ch, rep);
                         //printf("%c",ch );
                         if(ch == '\n' && temp==var2) {
-                                //fputs(stu->stu_npass,rep);
-                                fprintf(rep,"%s",stu->stu_npass);
+                                fputs(stu->stu_npass,rep);
+                                //fprintf(rep,"%s",stu->stu_npass);
                                 //printf("%s",stu->stu_npass);
                         }
                         if (ch == '\n')
@@ -957,8 +958,9 @@ void acpt_decline(int a)
                 fclose(pass);
                 fclose(rep);
 // sleep(200);
-                remove("StudentPass.txt");
-                rename("rep.txt","StudentPass.txt");
+
+              //  remove("StudentPass.txt");
+                //rename("rep.txt","StudentPass.txt");
                 printf("Returning to Previous Menu");
                 for(int j=0; j<3; j++)
                 {
@@ -993,6 +995,10 @@ void acpt_decline(int a)
                 acpt_decline(a);
         }
 
+}
+void showBookRequests()
+{
+  
 }
 int main()
 {
