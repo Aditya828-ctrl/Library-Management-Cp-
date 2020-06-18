@@ -1,0 +1,7 @@
+Name of passenger:  TANISH3
+Train booked:  GOLDN TEMPLE SPL
+Train number: 02904
+Train arrival time: 05:05
+train departure time: 07:20
+Ticket cost: 1860
+Seat no. booked :   19

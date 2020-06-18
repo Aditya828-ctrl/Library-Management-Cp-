@@ -12,7 +12,7 @@
 typedef struct cartbook
 {
   int issue;
-  char *id;
+  char id[50];
   struct cartbook *next;
 }cartstruct;
 typedef struct odr{
@@ -27,9 +27,9 @@ typedef struct odr{
 }order;//declared a structure of type order
 typedef struct reqbook
 {
-  char *title;
-  char *auname;
-  char *id;
+  char title[100];
+  char auname[100];
+  char id[50];
   struct reqbook *next;
 }reqstruct;
 typedef struct
@@ -70,6 +70,7 @@ struct cartbook *headis;//Issue Books
 struct cartbook *headrv;//Reserved Books
 struct reqbook  *headrq;//Requested Books
 
+void headrvLoader();//ADITYA
 void mainMenu();//ADITYA
 void *bookorder(order *z);//AMAN
 bool approvingRequest(char *str1,char *str2);//AMAN
@@ -101,9 +102,8 @@ void requestBook(char *);//ADITYA
 bool loadCart(bklist *,char *);//ADITYA
 bool isReserved(bklist *book,char *id);//ADITYA
 char* toUpperCase(char *s);//ADITYA
-cartstruct* headLoader2(char *file1,char *file2);//TANISH
 void cart(cartstruct *header);//TANISH
-void headLoader3(char *file1,char *file2,char *file3);//ADITYA
+void headrqLoader();//ADITYA
 int dumpres(cartstruct* a);//TANISH
 int dumpres1(cartstruct* a);//TANISH
 void dumpreq();//ADITYA
@@ -374,8 +374,14 @@ void mainMenu()
 void student(char *name, char *id)
 {
   printf("Welcome %s",name);
+  head=loaddatabase();
+  headis=(struct cartbook*)malloc(sizeof(struct cartbook));
+  headis->next=NULL;
+  headrvLoader();
+  printf("Done 2");
+  headrqLoader();
+  printf("Done 3");
   studentPage(id);
-
 }
 void staffPage(char *name,char *id)
 {
@@ -1050,7 +1056,7 @@ void acpt_decline(int a)
 }
 void showBookRequests()
 {
-  headLoader3("RequestedTitle.txt","RequestedAuName.txt","RequestedId.txt");
+  headrqLoader();
   if(headrq->next==NULL)
   {
     printf("No Pending book requests.\n");
@@ -1061,13 +1067,13 @@ void showBookRequests()
   current=headrq->next;int i=1;
   while(current!=NULL)
   {
-    printf("-----------------------------------------------------------------");
-    printf("%d. Title of the book: '%s'\n",current->title,i);
+    printf("-----------------------------------------------------------------\n");
+    printf("%d. Title of the book: '%s'\n",i,current->title);
     printf("   Name of author: '%s'\n",current->auname);
-    printf("   Requested by Id: '%s'\n");
+    printf("   Requested by Id: '%s'\n",current->id);
     current=current->next;i++;
   }
-  printf("-----------------------------------------------------------------");
+  printf("-----------------------------------------------------------------\n");
   printf("Enter the corresponding no. to approve the request");
   printf(" and order the book.\n");
   //We may add delete request also..
@@ -1079,6 +1085,7 @@ bool approveRequest(int i)
 {
   //check if this book has already been ordered ask to order Again
   //if no return false
+  //this can be done only after we have all the functions compiled here that AMAN BANSAL made
   struct reqbook *orb;
   orb=nthNode(i);
   if(approvingRequest(orb->auname,orb->title))
@@ -1401,12 +1408,6 @@ return cont;
 }
 void studentPage(char *id)
 {
- head=loaddatabase();
- headis=(struct cartbook*)malloc(sizeof(struct cartbook));
- headis->next=NULL;printf("a");
-// headrv=headLoader2("ReservedUserId.txt","ReservedBooks.txt");printf("b");
-//headLoader2 at 1705
- headLoader3("RequestedTitle.txt","RequestedAuName.txt","RequestedId.txt");
  printf("Choose an option.\n");
  printf("1.Issue a Book\n");
  printf("2.Return a Book\n");
@@ -1526,7 +1527,7 @@ void reserveBook(bklist *book,char *id)
  bool flag=true;
  p=(struct cartbook*)malloc(sizeof(struct cartbook));
  p->issue=book->issue;
- p->id=id;
+ strcpy(p->id,id);
  prev=headrv;
  current=headrv->next;
  while(current!=NULL&&flag)
@@ -1561,13 +1562,15 @@ bool loadCart(bklist *book,char *id)
  current->next=p;
  p->next=NULL;
  p->issue=book->issue;
- p->id=id;
+ strcpy(p->id,id);
  return true;
 }
 void requestBook(char *id)
 {
  char title[100],auname[100];
  printf("Enter the title of the book you want to order:\n ");
+ setvbuf(stdout, NULL, _IONBF, 0);
+ fgets(title,100,stdin);
  fgets(title,100,stdin);
  char *tit=toUpperCase(title);
  printf("Enter the name of the author of the book:\n");
@@ -1598,8 +1601,11 @@ void requestBook(char *id)
    strcpy(current->auname,aun);
    strcpy(current->id,id);
    current->next=NULL;
+   printf("Your request has been saved.\n");
  }
  dumpreq();
+ printf("Going Back to Main menu\n");
+ studentPage(id);
 }
 bool isReserved(bklist *book, char *id)
 {
@@ -1625,12 +1631,12 @@ bool isReserved(bklist *book, char *id)
  }
  return flag;
 }
-void headLoader3(char* file1,char* file2,char* file3)
+void headrqLoader()
 {
  FILE *fp1,*fp2,*fp3;
- fp1=fopen(file1,"r");
- fp2=fopen(file2,"r");
- fp3=fopen(file3,"r");
+ fp1=fopen("RequestedTitle.txt","r");
+ fp2=fopen("RequestedAuName.txt","r");
+ fp3=fopen("RequestedUserId.txt","r");
  struct reqbook *p,*current,*prev;
  headrq=(struct reqbook*)malloc(sizeof(struct reqbook));
  p=(struct reqbook*)malloc(sizeof(struct reqbook));
@@ -1659,21 +1665,29 @@ void headLoader3(char* file1,char* file2,char* file3)
 void dumpreq()
 {
  FILE *fp1,*fp2,*fp3;
- fp1=fopen("tempTitle.txt","w");
- fp2=fopen("tempAuName.txt","w");
- fp3=fopen("tempId.txt","w");
+ fp1=fopen("tempTitle.txt","a");
+ fp2=fopen("tempAuName.txt","a");
+ fp3=fopen("tempId.txt","a");
  struct reqbook *current;
  current=headrq->next;
  while(current!=NULL)
  {
    fputs(current->title,fp1);
    fputs(current->auname,fp2);
+   printf("//////%s/////",current->id);
    fputs(current->id,fp3);
+   putc('\n',fp3);
    current=current->next;
  }
  fclose(fp1);
  fclose(fp2);
  fclose(fp3);
+ remove("RequestedUserId.txt");
+ rename("tempId.txt","RequestedUserId.txt");
+ remove("RequestedTitle.txt");
+ rename("tempTitle.txt","RequestedTitle.txt");
+ remove("RequestedAuName.txt");
+ rename("tempAuName.txt","RequestedAuName.txt");
 }
 char* toUpperCase(char *s)
 {
@@ -1693,24 +1707,14 @@ char* toUpperCase(char *s)
  }
  return str;
 }
-//
-//
-//
-//Tanish's code from now on...
-//
-//
-//
-//
-//
-
-cartstruct* headLoader2(char *file1, char *file2)//TANISH
+void headrvLoader()
 {
-  cartstruct *carthead, *temp, *commit;
+  cartstruct *temp, *commit;
  FILE *userid, *iss;
- userid = fopen(file1, "r+");
- iss = fopen(file2, "r+");
- carthead = (cartstruct*)malloc(sizeof(cartstruct));
- for(temp = carthead;;temp = temp->next)
+ userid = fopen("ReservedUserId.txt", "r+");
+ iss = fopen("ReservedBooks.txt", "r+");
+ headrv = (cartstruct*)malloc(sizeof(cartstruct));
+ for(temp = headrv;;temp = temp->next)
  { commit = (cartstruct*)malloc(sizeof(cartstruct));
    if(commit == NULL)// if system is not able to allocate memory this condition keeps a check on that
       {
@@ -1718,28 +1722,19 @@ cartstruct* headLoader2(char *file1, char *file2)//TANISH
           break;
         }
 
-   if(fgets(commit->id,49, userid) == NULL)
+   if(fgets(commit->id,50, userid) == NULL)
    { free(commit);// done to avoid memory leak
      commit = NULL;// to avoid dangling pointer problem
      break;
    }
-   printf("%s",commit->id);
-printf("7");
-char ch[255];
- fgets(ch,255,iss);printf("8");
- commit->issue=atoi(ch);printf("9");
-   commit->next = NULL;printf("10");
+   fscanf(iss, "%d\n", &commit->issue);
+   commit->next = NULL;
    // printf("\n%s23\n  %d",commit->id, commit->issue);
    temp->next = commit;
-
  }
-
  fclose(userid);
  fclose(iss);
-return carthead;
-
 }
-
 cartstruct* cartissuelistloader(char *file, char *file1)
 {
   cartstruct *carthead, *temp, *commit;
@@ -1755,12 +1750,12 @@ cartstruct* cartissuelistloader(char *file, char *file1)
           break;
         }
 
-   if(fgets(commit->id,49, userid) == NULL)
+   if(fgets(commit->id,50, userid) == NULL)
    { free(commit);// done to avoid memory leak
      commit = NULL;// to avoid dangling pointer problem
+printf("NULL");
      break;
    }
-
    fscanf(iss, "%d\n", &commit->issue);
    commit->next = NULL;
    // printf("\n%s23\n  %d",commit->id, commit->issue);
@@ -1870,8 +1865,8 @@ cartstruct *specificuserloader1(char *s)
 {
  cartstruct *carthead, *temp, *commit;
  FILE *userid, *iss;
- userid = fopen("file1.txt", "r+");
- iss = fopen("file2.txt", "r+");
+ userid = fopen("file1.txt", "w+");
+ iss = fopen("file2.txt", "w+");
  carthead = (cartstruct*)malloc(sizeof(cartstruct));
  for(temp = carthead;;)
  { commit = (cartstruct*)malloc(sizeof(cartstruct));

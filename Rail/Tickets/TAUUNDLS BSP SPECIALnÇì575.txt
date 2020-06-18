@@ -1,0 +1,7 @@
+Name of passenger:  TAUU
+Train booked:  NDLS BSP SPECIAL
+Train number: 02442
+Train arrival time: 06:10
+train departure time: 16:00
+Ticket cost: 2505
+Seat no. booked :   11

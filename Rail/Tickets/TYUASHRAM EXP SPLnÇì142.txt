@@ -1,0 +1,7 @@
+Name of passenger:  TYU
+Train booked:  ASHRAM EXP SPL
+Train number: 02145
+Train arrival time: 20:25
+train departure time: 15:20
+Ticket cost: 1602
+Seat no. booked :   15

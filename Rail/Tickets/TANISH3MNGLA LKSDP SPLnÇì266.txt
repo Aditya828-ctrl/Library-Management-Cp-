@@ -1,0 +1,7 @@
+Name of passenger:  TANISH3
+Train booked:  MNGLA LKSDP SPL
+Train number: 02618
+Train arrival time: 09:25
+train departure time: 09:15
+Ticket cost: 1965
+Seat no. booked :   12

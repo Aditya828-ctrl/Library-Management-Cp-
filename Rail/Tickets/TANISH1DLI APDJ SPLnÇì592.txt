@@ -1,0 +1,7 @@
+Name of passenger:  TANISH1
+Train booked:  DLI APDJ SPL
+Train number: 02858
+Train arrival time: 00:20
+train departure time: 06:35
+Ticket cost: 1377
+Seat no. booked :   15

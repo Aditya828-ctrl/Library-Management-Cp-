@@ -1,0 +1,7 @@
+Name of passenger:  TANISH1
+Train booked:  RJSTHN S KRN SPL
+Train number: 02147
+Train arrival time: 03:05
+train departure time: 22:25
+Ticket cost: 1380
+Seat no. booked :   13

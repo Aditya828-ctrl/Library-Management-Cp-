@@ -1,0 +1,7 @@
+Name of passenger:  TANISH2
+Train booked:  BIHAR S K SPL
+Train number: 02351
+Train arrival time: 20:10
+train departure time: 14:15
+Ticket cost: 842
+Seat no. booked :   18

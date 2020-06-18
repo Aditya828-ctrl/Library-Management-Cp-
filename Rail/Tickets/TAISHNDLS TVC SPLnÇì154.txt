@@ -1,0 +1,7 @@
+Name of passenger:  TAISH
+Train booked:  NDLS TVC SPL
+Train number: 02432
+Train arrival time: 05:00
+train departure time: 11:25
+Ticket cost: 2610
+Seat no. booked :   22

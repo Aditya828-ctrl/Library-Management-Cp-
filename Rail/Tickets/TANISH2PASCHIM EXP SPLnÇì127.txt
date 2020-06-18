@@ -1,0 +1,7 @@
+Name of passenger:  TANISH2
+Train booked:  PASCHIM EXP SPL
+Train number: 02926
+Train arrival time: 14:45
+train departure time: 16:45
+Ticket cost: 1845
+Seat no. booked :   21

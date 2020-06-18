@@ -1,0 +1,7 @@
+Name of passenger:  TANISH1
+Train booked:  TELANGANA E SPL
+Train number: 02724
+Train arrival time: 19:35
+train departure time: 17:25
+Ticket cost: 2100
+Seat no. booked :   17

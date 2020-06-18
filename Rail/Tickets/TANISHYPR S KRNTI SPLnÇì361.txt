@@ -1,0 +1,7 @@
+Name of passenger:  TANISH
+Train booked:  YPR S KRNTI SPL
+Train number: 02630
+Train arrival time: 11:05
+train departure time: 08:45
+Ticket cost: 675
+Seat no. booked :   18

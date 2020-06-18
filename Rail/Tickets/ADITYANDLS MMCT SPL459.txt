@@ -1,0 +1,7 @@
+Name of passenger:  ADITYA
+Train booked:  NDLS MMCT SPL
+Train number: 02952
+Train arrival time: 08:50
+train departure time: 17:00
+Ticket cost: 2565
+Seat no. booked :   12

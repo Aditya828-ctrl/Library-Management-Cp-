@@ -1,0 +1,7 @@
+Name of passenger:  TANISH2
+Train booked:  GOMTI EXP SPL
+Train number: 02513
+Train arrival time: 19:50
+train departure time: 12:25
+Ticket cost: 354
+Seat no. booked :   15

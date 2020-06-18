@@ -1,0 +1,7 @@
+Name of passenger:  TANISH2
+Train booked:  NDLS MMCT SPL
+Train number: 02415
+Train arrival time: 17:30
+train departure time: 11:30
+Ticket cost: 475
+Seat no. booked :   17

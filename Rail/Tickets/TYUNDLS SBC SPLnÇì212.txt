@@ -1,0 +1,7 @@
+Name of passenger:  TYU
+Train booked:  NDLS SBC SPL
+Train number: 02962
+Train arrival time: 18:20
+train departure time: 21:15
+Ticket cost: 3195
+Seat no. booked :   16

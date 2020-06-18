@@ -1,0 +1,7 @@
+Name of passenger:  TANISH
+Train booked:  NDLS VSKP AP SPL
+Train number: 02806
+Train arrival time: 11:25
+train departure time: 20:15
+Ticket cost: 540
+Seat no. booked :   17

@@ -1,0 +1,7 @@
+Name of passenger:  TANISH2
+Train booked:  PASCHIM EXP SPL
+Train number: 02416
+Train arrival time: 08:00
+train departure time: 01:45
+Ticket cost: 1236
+Seat no. booked :   15

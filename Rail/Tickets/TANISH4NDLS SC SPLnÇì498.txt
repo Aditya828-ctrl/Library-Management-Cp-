@@ -1,0 +1,7 @@
+Name of passenger:  TANISH4
+Train booked:  NDLS SC SPL
+Train number: 02438
+Train arrival time: 14:00
+train departure time: 16:00
+Ticket cost: 1065
+Seat no. booked :   19

@@ -1,0 +1,8 @@
+Name of passenger:  ADITYA CHORARIA
+
+Train booked:  NDLS MAS SPL
+Train number: 02691
+Train arrival time: 23:10
+train departure time: 00:20
+Ticket cost: 740
+Seat no. booked :   27

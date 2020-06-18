@@ -1,0 +1,7 @@
+Name of passenger:  TANISH3
+Train booked:  NDLS HWH SPL
+Train number: 02759
+Train arrival time: 22:10
+train departure time: 04:05
+Ticket cost: 2691
+Seat no. booked :   25
