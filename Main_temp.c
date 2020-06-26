@@ -683,12 +683,12 @@ void alert_id(char *coding)
 void student(char *name, char *id)
 {
   printf("\n+++++Welcome %s\n+++++",name);
+  
   //head=loaddatabase();
   headisLoader();
   headrvLoader();
   headrq1Loader();
   headrq2Loader();
-  printf("Done 3");
   setvbuf(stdout, NULL, _IONBF, 0);
   printf("Loading your Account");
   int i=0;
@@ -2270,9 +2270,9 @@ void headrq1Loader()
 void headrq2Loader()
 {
  FILE *fp1,*fp2,*fp3;
- fp1=fopen("ApprovedRequestedTitle.txt","r");
- fp2=fopen("ApprovedRequestedAuthor.txt","r");
- fp3=fopen("ApprovedRequestedUserId.txt","r");
+ fp1=fopen("ApprovedRequestTitle.txt","r");
+ fp2=fopen("ApprovedRequestAuthor.txt","r");
+ fp3=fopen("ApprovedRequestUserId.txt","r");
  struct reqbook *p,*current,*prev;
  headrq[1]=(struct reqbook*)malloc(sizeof(struct reqbook));
  p=(struct reqbook*)malloc(sizeof(struct reqbook));
@@ -2357,17 +2357,17 @@ void dumpreq1()
  fclose(fp1);
  fclose(fp2);
  fclose(fp3);
- remove("ApprovedRequestedUserId.txt");
+ remove("ApprovedRequestUserId.txt");
 
- rename("tempId.txt","ApprovedRequestedUserId.txt");
+ rename("tempId.txt","ApprovedRequestUserId.txt");
 
- remove("ApprovedRequestedTitle.txt");
+ remove("ApprovedRequestTitle.txt");
 
- rename("tempTitle.txt","ApprovedRequestedTitle.txt");
+ rename("tempTitle.txt","ApprovedRequestTitle.txt");
 
- remove("ApprovedRequestedAuName.txt");
+ remove("ApprovedRequestAuName.txt");
 
- rename("tempAuName.txt","ApprovedRequestedAuName.txt");
+ rename("tempAuName.txt","ApprovedRequestAuName.txt");
 }
 char* toUpperCase(char *s)
 {
